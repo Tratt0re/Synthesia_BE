@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Config(BaseSettings):
     environment: str
+    llm_service: str = "LOCAL"
     logging_format: str = "%(asctime)s %(levelname)s -> %(message)s"
     logging_level: str = "INFO"
     logging_date_format: str = "%H:%M:%S"
@@ -13,6 +14,8 @@ class Config(BaseSettings):
 
     mongodb_url: str
     mongodb_db_name: str
+
+    groq_api_key: str
 
     model_config = SettingsConfigDict(env_file=".env")
 

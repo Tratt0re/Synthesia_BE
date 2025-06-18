@@ -1,6 +1,7 @@
 from typing import List
 from src.services.llm.base import LLMService
 from src.models.default.llm import AvailableModel
+from src.models.default.prompt_template import PromptTemplate
 from ollama import AsyncClient
 import logging
 
@@ -10,8 +11,21 @@ class LocalOllamaService(LLMService):
         self.client = AsyncClient(host=host)
         logging.info("-- LocalOllamaService service initialized --")
 
+    def _build_prompt(
+        self,
+        text: str,
+        prompt_template: PromptTemplate = PromptTemplate.SUMMARIZE,
+        language: str = "eng",
+    ) -> str:
+        base_instruction = prompt_template.resolve(language)
+        return f"{base_instruction}\n\n{text}"
+
     async def summarize(self, text: str, model: str, language: str = "eng") -> str:
-        prompt = self._build_prompt(text, language)
+        prompt = self._build_prompt(
+            text=text,
+            prompt_template=PromptTemplate.SUMMARIZE,
+            language=language,
+        )
 
         try:
             response = await self.client.generate(
@@ -24,16 +38,22 @@ class LocalOllamaService(LLMService):
             logging.error(f"[LocalOllamaService] summarize() failed: {e}")
             raise
 
-    def _build_prompt(self, text: str, language: str) -> str:
-        language_map = {
-            "eng": "Summarize the following text",
-            "ita": "Riassumi il seguente testo",
-            "es": "Resume el siguiente texto",
-            "fr": "Résume le texte suivant",
-        }
+    async def extract_entities(self, text: str, model: str) -> str:
+        prompt = self._build_prompt(
+            text=text,
+            prompt_template=PromptTemplate.EXTRACT_ENTITIES,
+        )
 
-        base_instruction = language_map.get(language.lower(), language_map["eng"])
-        return f"{base_instruction}:\n\n{text}"
+        try:
+            response = await self.client.generate(
+                model=model,
+                prompt=prompt,
+                stream=False,
+            )
+            return response.get("response", "").strip()
+        except Exception as e:
+            logging.error(f"[LocalOllamaService] summarize() failed: {e}")
+            raise
 
     async def list_models(self) -> List[AvailableModel]:
         try:

@@ -1,10 +1,11 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Dict, Any, Literal
 
 
 class AvailableModel(BaseModel):
     model: str
-    parameter_size: str
+
+    model_config = ConfigDict(extra="allow")
 
 
 class SummarizeRequest(BaseModel):
@@ -22,3 +23,15 @@ class SummarizeResponse(BaseModel):
 
 class LLMListResponse(BaseModel):
     models: List[Dict[str, Any]]
+
+
+class ExtractEntitiesRequest(BaseModel):
+    text: str = Field(..., description="Text to extract entities from")
+    model: str = Field(..., description="Model to use (e.g. llama3, mixtral)")
+
+
+class ExtractEntitiesResponse(BaseModel):
+    entities: Dict[str, Any] = Field(
+        ...,
+        description="Extracted entities as key-value pairs or raw fallback response",
+    )

@@ -6,6 +6,7 @@ charset-normalizer==3.4.2
 clean-text==0.6.0
 click==8.2.1
 cryptography==45.0.4
+demjson3==3.0.6
 dnspython==2.7.0
 email_validator==2.2.0
 emoji==1.7.0

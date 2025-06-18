@@ -6,5 +6,9 @@ class LLMService(ABC):
         pass
 
     @abstractmethod
+    async def extract_entities(self, text: str, model: str) -> str:
+        pass
+
+    @abstractmethod
     async def list_models(self) -> list[any]:
         pass

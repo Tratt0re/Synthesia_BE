@@ -2,7 +2,13 @@ import logging
 from typing import Literal
 from fastapi import APIRouter, Body, UploadFile, File, Form
 from src.controllers.llm_controller import LLMController
-from src.models.default.llm import SummarizeRequest, SummarizeResponse, LLMListResponse
+from src.models.default.llm import (
+    SummarizeRequest,
+    SummarizeResponse,
+    LLMListResponse,
+    ExtractEntitiesResponse,
+    ExtractEntitiesRequest,
+)
 from src.core.response_formatter import ApiResponseFormatter
 from src.core.exceptions import ServerErrorException
 
@@ -66,3 +72,40 @@ async def summarize_from_file(
     except Exception as err:
         logging.error(f"POST - /llm/summarize-file: {err}")
         raise ServerErrorException("Failed to summarize file content")
+
+
+@router.post("/extract-entities", response_model=ExtractEntitiesResponse)
+async def extract_entities(
+    request: ExtractEntitiesRequest = Body(..., alias="request")
+):
+    logging.info("POST - /llm/extract-entities")
+    controller = LLMController()
+
+    try:
+        result = await controller.extract_entities(
+            text=request.text,
+            model=request.model,
+        )
+        return ApiResponseFormatter.success(entities=result)
+    except Exception as err:
+        logging.error(f"POST - /llm/extract-entities: {err}")
+        raise ServerErrorException("Failed to extract entities from text")
+
+
+@router.post("/extract-entities-file", response_model=ExtractEntitiesResponse)
+async def extract_entities_from_file(
+    file: UploadFile = File(..., description="PDF or TXT file to analyze"),
+    model: str = Form(..., description="Model to use (e.g. llama3, mixtral)"),
+):
+    logging.info("POST - /llm/extract-entities-file")
+    controller = LLMController()
+
+    try:
+        result = await controller.extract_entities_from_file(
+            file=file,
+            model=model,
+        )
+        return ApiResponseFormatter.success(entities=result)
+    except Exception as err:
+        logging.error(f"POST - /llm/extract-entities-file: {err}")
+        raise ServerErrorException("Failed to extract entities from file")
