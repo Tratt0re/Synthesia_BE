@@ -88,6 +88,7 @@ class TextCleaner(Service):
         """
         try:
             cleaned_text = clean(text, **self.cleaning_options)
+            cleaned_text = cleaned_text.replace("\n", " ").strip()
             return cleaned_text
         except Exception as err:
             logging.error(f"TextCleaner/clean_text - Failed to clean text: {err}")

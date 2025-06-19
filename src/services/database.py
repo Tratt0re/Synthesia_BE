@@ -12,6 +12,7 @@ class Database(Service):
         self._db: Optional[AsyncIOMotorDatabase] = None
         self._mongo_url = mongo_url
         self._db_name = db_name
+        logging.info("-- MongoDB service initialized --")
 
     async def connect(self):
         try:

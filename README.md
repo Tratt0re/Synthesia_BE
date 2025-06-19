@@ -10,7 +10,7 @@ Questo è il backend del progetto **Synthesia**, un'applicazione web per la sint
 - **Motor (MongoDB async client)**
 - **Uvicorn** (per il server ASGI)
 - **dotenv** (gestione variabili d’ambiente)
-- **LlamaIndex / Mixtral / HuggingFace / WatsonX** (integrazione opzionale con modelli LLM)
+- **Ollama / WatsonX / HuggingFace / Groq** (integrazione opzionale con modelli LLM)
 
 ## 🗂 Struttura del progetto
 
