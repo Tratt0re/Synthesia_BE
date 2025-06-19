@@ -11,15 +11,6 @@ class LocalOllamaService(LLMService):
         self.client = AsyncClient(host=host)
         logging.info("-- LocalOllamaService service initialized --")
 
-    def _build_prompt(
-        self,
-        text: str,
-        prompt_template: PromptTemplate = PromptTemplate.SUMMARIZE,
-        language: str = "eng",
-    ) -> str:
-        base_instruction = prompt_template.resolve(language)
-        return f"{base_instruction}\n\n{text}"
-
     async def summarize(self, text: str, model: str, language: str = "eng") -> str:
         prompt = self._build_prompt(
             text=text,
@@ -38,10 +29,11 @@ class LocalOllamaService(LLMService):
             logging.error(f"[LocalOllamaService] summarize() failed: {e}")
             raise
 
-    async def extract_entities(self, text: str, model: str) -> str:
+    async def extract_entities(self, text: str, model: str, entities: list[str]) -> str:
         prompt = self._build_prompt(
             text=text,
             prompt_template=PromptTemplate.EXTRACT_ENTITIES,
+            entities=entities,
         )
 
         try:

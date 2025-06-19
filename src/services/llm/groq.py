@@ -12,17 +12,12 @@ class GroqService(LLMService):
         self.client = AsyncGroq(api_key=api_key)
         logging.info("-- GroqService initialized --")
 
-    def _build_prompt(
-        self,
-        text: str,
-        prompt_template: PromptTemplate = PromptTemplate.SUMMARIZE,
-        language: str = "eng",
-    ) -> str:
-        base_instruction = prompt_template.resolve(language)
-        return f"{base_instruction}\n\n{text}"
-
     async def summarize(self, text: str, model: str, language: str = "eng") -> str:
-        prompt = self._build_prompt(text, PromptTemplate.SUMMARIZE, language)
+        prompt = self._build_prompt(
+            text=text,
+            prompt_template=PromptTemplate.SUMMARIZE,
+            language=language,
+        )
 
         try:
             response = await self.client.chat.completions.create(
@@ -34,8 +29,14 @@ class GroqService(LLMService):
             logging.error(f"GroqService/summarize error: {e}")
             raise
 
-    async def extract_entities(self, text: str, model: str) -> str:
-        prompt = self._build_prompt(text, PromptTemplate.EXTRACT_ENTITIES)
+    async def extract_entities(
+        self, text: str, model: str, entities: list[str] = None
+    ) -> str:
+        prompt = self._build_prompt(
+            text=text,
+            prompt_template=PromptTemplate.EXTRACT_ENTITIES,
+            entities=entities,
+        )
 
         try:
             response = await self.client.chat.completions.create(

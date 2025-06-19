@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Dict, Any, Literal
+from typing import List, Dict, Any, Literal, Optional, Union
 
 
 class AvailableModel(BaseModel):
@@ -19,6 +19,7 @@ class SummarizeRequest(BaseModel):
 
 class SummarizeResponse(BaseModel):
     summary: str
+    result_id: str
 
 
 class LLMListResponse(BaseModel):
@@ -28,6 +29,10 @@ class LLMListResponse(BaseModel):
 class ExtractEntitiesRequest(BaseModel):
     text: str = Field(..., description="Text to extract entities from")
     model: str = Field(..., description="Model to use (e.g. llama3, mixtral)")
+    entities: Optional[list[str]] = Field(
+        default=None,
+        description="Optional list of entities to extract (e.g. disease, risk_factors)",
+    )
 
 
 class ExtractEntitiesResponse(BaseModel):
@@ -35,3 +40,27 @@ class ExtractEntitiesResponse(BaseModel):
         ...,
         description="Extracted entities as key-value pairs or raw fallback response",
     )
+    result_id: str
+
+
+class AnalyzeRequest(BaseModel):
+    text: Optional[str] = Field(
+        None, description="Text to analyze. Required if file is not provided."
+    )
+    model: str = Field(..., description="Model to use (e.g. llama3, mixtral)")
+    language: Optional[str] = Field(
+        default="eng",
+        description="Language for summarization output (e.g. eng, ita, es, fr)",
+    )
+    entities: Optional[List[str]] = Field(
+        default=None,
+        description="Optional list of entities to extract (e.g. disease, risk_factors)",
+    )
+
+
+class AnalyzeResponse(BaseModel):
+    summary: str = Field(..., description="Summary of the input text")
+    entities: Union[Dict[str, Union[str, dict]], None] = Field(
+        ..., description="Extracted entities as a dictionary"
+    )
+    result_id: str

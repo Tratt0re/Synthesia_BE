@@ -1,13 +1,16 @@
 import logging
-from typing import Literal
-from fastapi import APIRouter, Body, UploadFile, File, Form
+from typing import Literal, Annotated
+from fastapi import APIRouter, Body, UploadFile, File, Form, Header
 from src.controllers.llm_controller import LLMController
+from src.controllers.processed_results_controller import ProcessedResultController
 from src.models.default.llm import (
     SummarizeRequest,
     SummarizeResponse,
     LLMListResponse,
     ExtractEntitiesResponse,
     ExtractEntitiesRequest,
+    AnalyzeResponse,
+    AnalyzeRequest,
 )
 from src.core.response_formatter import ApiResponseFormatter
 from src.core.exceptions import ServerErrorException
@@ -34,17 +37,37 @@ async def list_llm_models():
 
 
 @router.post("/summarize", response_model=SummarizeResponse)
-async def summarize_text(request: SummarizeRequest = Body(..., alias="request")):
+async def summarize_text(
+    user_id: Annotated[str, Header(..., description="User ID from browser metadata")],
+    request: SummarizeRequest = Body(..., alias="request"),
+):
     logging.info("POST - /llm/summarize")
-    controller = LLMController()
+    llm_controller = LLMController()
+    result_controller = ProcessedResultController()
 
     try:
-        summary = await controller.summarize(
+        result = await llm_controller.summarize(
             text=request.text,
             model=request.model,
             language=request.language,
         )
-        return ApiResponseFormatter.success(summary=summary)
+
+        result_id = await result_controller.upsert_result(
+            user_id=user_id,
+            input_text=result["cleaned_input"],
+            is_file=False,
+            summary=result["summary"],
+            entities=None,
+            entity_keys=None,
+            filename=None,
+            model=request.model,
+            language=request.language,
+        )
+
+        return ApiResponseFormatter.success(
+            summary=result["summary"],
+            result_id=result_id,
+        )
     except Exception as err:
         logging.error(f"POST - /llm/summarize: {err}")
         raise ServerErrorException("Failed to summarize text")
@@ -52,6 +75,7 @@ async def summarize_text(request: SummarizeRequest = Body(..., alias="request"))
 
 @router.post("/summarize-file", response_model=SummarizeResponse)
 async def summarize_from_file(
+    user_id: Annotated[str, Header(..., description="User ID from browser metadata")],
     file: UploadFile = File(..., description="PDF or TXT file to summarize"),
     model: str = Form(..., description="Model to use (e.g. llama3, mixtral)"),
     language: Literal["eng", "ita", "es", "fr"] = Form(
@@ -60,15 +84,31 @@ async def summarize_from_file(
     ),
 ):
     logging.info("POST - /llm/summarize-file")
-    controller = LLMController()
+    llm_controller = LLMController()
+    result_controller = ProcessedResultController()
 
     try:
-        summary = await controller.summarize_from_file(
+        result = await llm_controller.summarize(
             file=file,
             model=model,
             language=language,
         )
-        return ApiResponseFormatter.success(summary=summary)
+
+        result_id = await result_controller.upsert_result(
+            user_id=user_id,
+            input_text=result["cleaned_input"],
+            is_file=True,
+            summary=result["summary"],
+            entities=None,
+            entity_keys=None,
+            filename=file.filename,
+            model=model,
+            language=language,
+        )
+        return ApiResponseFormatter.success(
+            summary=result["summary"],
+            result_id=result_id,
+        )
     except Exception as err:
         logging.error(f"POST - /llm/summarize-file: {err}")
         raise ServerErrorException("Failed to summarize file content")
@@ -76,17 +116,34 @@ async def summarize_from_file(
 
 @router.post("/extract-entities", response_model=ExtractEntitiesResponse)
 async def extract_entities(
-    request: ExtractEntitiesRequest = Body(..., alias="request")
+    user_id: Annotated[str, Header(..., description="User ID from browser metadata")],
+    request: ExtractEntitiesRequest = Body(..., alias="request"),
 ):
     logging.info("POST - /llm/extract-entities")
-    controller = LLMController()
+    llm_controller = LLMController()
+    result_controller = ProcessedResultController()
 
     try:
-        result = await controller.extract_entities(
+        result = await llm_controller.extract_entities(
             text=request.text,
             model=request.model,
+            entities=request.entities,
         )
-        return ApiResponseFormatter.success(entities=result)
+        result_id = await result_controller.upsert_result(
+            user_id=user_id,
+            input_text=result["cleaned_input"],
+            is_file=False,
+            summary=None,
+            entities=result["entities"],
+            entity_keys=request.entities,
+            filename=None,
+            model=request.model,
+        )
+
+        return ApiResponseFormatter.success(
+            entities=result["entities"],
+            result_id=result_id,
+        )
     except Exception as err:
         logging.error(f"POST - /llm/extract-entities: {err}")
         raise ServerErrorException("Failed to extract entities from text")
@@ -94,18 +151,122 @@ async def extract_entities(
 
 @router.post("/extract-entities-file", response_model=ExtractEntitiesResponse)
 async def extract_entities_from_file(
+    user_id: Annotated[str, Header(..., description="User ID from browser metadata")],
+    model: Annotated[str, Form(..., description="Model to use (e.g. llama3, mixtral)")],
+    entities: Annotated[
+        list[str] | None,
+        Form(
+            description="Optional list of entities to extract (e.g. disease, risk_factors)"
+        ),
+    ] = None,
     file: UploadFile = File(..., description="PDF or TXT file to analyze"),
-    model: str = Form(..., description="Model to use (e.g. llama3, mixtral)"),
 ):
     logging.info("POST - /llm/extract-entities-file")
-    controller = LLMController()
+    llm_controller = LLMController()
+    result_controller = ProcessedResultController()
 
     try:
-        result = await controller.extract_entities_from_file(
+        result = await llm_controller.extract_entities(
             file=file,
             model=model,
+            entities=entities,
         )
-        return ApiResponseFormatter.success(entities=result)
+
+        result_id = await result_controller.upsert_result(
+            user_id=user_id,
+            input_text=result["cleaned_input"],
+            is_file=True,
+            summary=None,
+            entities=result["entities"],
+            entity_keys=entities,
+            filename=file.filename,
+            model=model,
+        )
+        return ApiResponseFormatter.success(
+            entities=result["entities"], result_id=result_id
+        )
     except Exception as err:
         logging.error(f"POST - /llm/extract-entities-file: {err}")
         raise ServerErrorException("Failed to extract entities from file")
+
+
+@router.post("/analyze", response_model=AnalyzeResponse)
+async def analyze_text(
+    user_id: Annotated[str, Header(..., description="User ID from browser metadata")],
+    request: AnalyzeRequest = Body(..., alias="request"),
+):
+    logging.info("POST - /llm/analyze")
+    llm_controller = LLMController()
+    result_controller = ProcessedResultController()
+
+    try:
+        result = await llm_controller.analyze(
+            model=request.model,
+            language=request.language,
+            text=request.text,
+            entities=request.entities,
+        )
+
+        result_id = await result_controller.upsert_result(
+            user_id=user_id,
+            input_text=result["cleaned_input"],
+            is_file=False,
+            summary=result["summary"],
+            entities=result["entities"],
+            entity_keys=request.entities,
+            filename=None,
+            model=request.model,
+            language=request.language,
+        )
+        return ApiResponseFormatter.success(
+            summary=result["summary"],
+            entities=result["entities"],
+            result_id=result_id,
+        )
+    except Exception as err:
+        logging.error(f"POST - /llm/analyze: {err}")
+        raise ServerErrorException("Failed to analyze text")
+
+
+@router.post("/analyze-file", response_model=AnalyzeResponse)
+async def analyze_file(
+    user_id: Annotated[str, Header(..., description="User ID from browser metadata")],
+    model: Annotated[str, Form(..., description="Model to use (e.g. llama3, mixtral)")],
+    language: Annotated[
+        str, Form(description="Language for summarization (eng, ita, es, fr)")
+    ] = "eng",
+    entities: Annotated[
+        list[str], Form(description="Optional list of entities to extract")
+    ] = None,
+    file: UploadFile = File(..., description="PDF or TXT file to analyze"),
+):
+    logging.info("POST - /llm/analyze-file")
+    llm_controller = LLMController()
+    result_controller = ProcessedResultController()
+
+    try:
+        result = await llm_controller.analyze(
+            model=model,
+            language=language,
+            file=file,
+            entities=entities,
+        )
+        result_id = await result_controller.upsert_result(
+            user_id=user_id,
+            input_text=result["cleaned_input"],
+            is_file=True,
+            summary=result["summary"],
+            entities=result["entities"],
+            entity_keys=entities,
+            filename=file.filename,
+            model=model,
+            language=language,
+        )
+        return ApiResponseFormatter.success(
+            summary=result["summary"],
+            entities=result["entities"],
+            result_id=result_id,
+        )
+    except Exception as err:
+        logging.error(f"POST - /llm/analyze-file: {err}")
+        raise ServerErrorException("Failed to analyze file")
