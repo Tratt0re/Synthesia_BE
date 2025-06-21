@@ -29,7 +29,7 @@ def init_json_extractor() -> JsonExtractor:
 
 def init_llm_service() -> LLMServiceBase:
     config = get_config()
-    match config.llm_service:
+    match config.llm_service.upper():
         case "LOCAL":
             return LocalOllamaService(host="http://localhost:11434")
         case "GROQ":
