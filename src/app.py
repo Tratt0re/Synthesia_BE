@@ -21,6 +21,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi import HTTPException
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from src.services import DatabaseService
+from fastapi.middleware.cors import CORSMiddleware
 
 
 # Used to perform operation while starting up or shutting down the FastAPI application.
@@ -75,6 +76,20 @@ app.add_exception_handler(UnauthorizedException, unauthorized_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
 app.add_exception_handler(StarletteHTTPException, custom_404_handler)
+
+# Dev.
+origins = [
+    "http://localhost:3000",  # Next.js dev server
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,            # or ["*"] for all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Include your routers
 init_routers(app=app, global_prefix="/synthesia_be")
