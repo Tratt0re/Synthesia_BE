@@ -7,7 +7,7 @@ from src.models.database.processed_result import ProcessedResult
 from pymongo import ASCENDING
 from src.utils.hash_utils import generate_input_hash
 from src.services import DatabaseService
-from src.core.exceptions import ServerErrorException
+from src.core.exceptions import ServerErrorException, NotFoundException
 
 
 class ProcessedResultController:
@@ -43,7 +43,7 @@ class ProcessedResultController:
                 update_data = {
                     "updated_at": now,
                 }
-                
+
                 summary_history = []
                 entities_history = []
 
@@ -127,8 +127,10 @@ class ProcessedResultController:
         user_id: str,
         skip: int = 0,
         limit: int = 10,
-    ) -> list[ProcessedResult]:
+    ) -> dict:
         try:
+            total_count = await self.collection.count_documents({"user_id": user_id})
+
             cursor = (
                 self.collection.find({"user_id": user_id})
                 .sort("updated_at", ASCENDING)
@@ -136,17 +138,44 @@ class ProcessedResultController:
                 .limit(limit)
             )
             results = await cursor.to_list(length=limit)
-            return [ProcessedResult.model_validate(r) for r in results]
+            validated_results = [ProcessedResult.model_validate(r) for r in results]
+
+            return {
+                "results": validated_results,
+                "total": total_count,
+            }
         except Exception as err:
             logging.error(f"ProcessedResultController/list_results - err: {err}")
             raise ServerErrorException("Failed to retrieve processed results.")
 
+    async def get_result(
+        self,
+        user_id: str,
+        result_id: str,
+    ) -> ProcessedResult:
+        try:
+            result = await self.collection.find_one(
+                {
+                    "user_id": user_id,
+                    "_id": result_id,
+                }
+            )
+            if not result:
+                raise NotFoundException("Result not found.")
+            validated_result = ProcessedResult.model_validate(result)
+
+            return validated_result
+        except NotFoundException:
+            raise
+        except Exception as err:
+            logging.error(f"ProcessedResultController/get_result - err: {err}")
+            raise ServerErrorException("Failed to retrieve processed results.")
+
     async def delete_result(self, user_id: str, result_id: str) -> bool:
         try:
-            result = await self.collection.delete_one({
-                "user_id": user_id,
-                "_id": result_id
-            })
+            result = await self.collection.delete_one(
+                {"user_id": user_id, "_id": result_id}
+            )
             return result.deleted_count > 0
         except Exception as err:
             logging.error(f"ProcessedResultController/delete_result - err: {err}")

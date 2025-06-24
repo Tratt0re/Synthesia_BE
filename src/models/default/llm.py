@@ -16,7 +16,6 @@ class SummarizeRequest(BaseModel):
         description="Language for the summarization prompt. Supported values: 'eng' (English), 'ita' (Italian), 'es' (Spanish), 'fr' (French).",
     )
 
-
 class SummarizeResponse(BaseModel):
     summary: str
     result_id: str
