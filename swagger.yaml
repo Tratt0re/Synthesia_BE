@@ -1,0 +1,1243 @@
+---
+openapi: "3.1.0"
+info: 
+  title: "FastAPI"
+  version: "v0.0.1"
+paths: 
+  /synthesia_be/test/: 
+    get: 
+      tags: 
+      - "test"
+      summary: "Test"
+      operationId: "test_synthesia_be_test__get"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/test/environment: 
+    get: 
+      tags: 
+      - "test"
+      summary: "Environment"
+      operationId: "environment_synthesia_be_test_environment_get"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/user/: 
+    post: 
+      tags: 
+      - "user"
+      summary: "Create Anon User"
+      operationId: "create_anon_user_synthesia_be_user__post"
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UserCreateRequest"
+        required: "true"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/UserResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/user/{id}: 
+    get: 
+      tags: 
+      - "user"
+      summary: "Get User By Id"
+      operationId: "get_user_by_id_synthesia_be_user__id__get"
+      parameters: 
+      - name: "id"
+        in: "path"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "MongoDB ObjectId of the user"
+          title: "Id"
+        description: "MongoDB ObjectId of the user"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/UserResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+    put: 
+      tags: 
+      - "user"
+      summary: "Update User By Id"
+      operationId: "update_user_by_id_synthesia_be_user__id__put"
+      parameters: 
+      - name: "id"
+        in: "path"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "MongoDB ObjectId of the user"
+          title: "Id"
+        description: "MongoDB ObjectId of the user"
+      requestBody: 
+        required: "true"
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UserUpdateRequest"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/UserResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/user/{id}/results: 
+    get: 
+      tags: 
+      - "user"
+      summary: "Get User Results"
+      operationId: "get_user_results_synthesia_be_user__id__results_get"
+      parameters: 
+      - name: "id"
+        in: "path"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "MongoDB ObjectId of the user"
+          title: "Id"
+        description: "MongoDB ObjectId of the user"
+      - name: "skip"
+        in: "query"
+        required: "false"
+        schema: 
+          type: "integer"
+          description: "Number of results to skip for pagination"
+          default: "0"
+          title: "Skip"
+        description: "Number of results to skip for pagination"
+      - name: "limit"
+        in: "query"
+        required: "false"
+        schema: 
+          type: "integer"
+          description: "Max number of results to return"
+          default: "10"
+          title: "Limit"
+        description: "Max number of results to return"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/PaginatedResults"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/user/{user_id}/results/{result_id}: 
+    get: 
+      tags: 
+      - "user"
+      summary: "Get User Result By Id"
+      operationId: "get_user_result_by_id_synthesia_be_user__user_id__results__result_id__get"
+      parameters: 
+      - name: "user_id"
+        in: "path"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "MongoDB ObjectId of the user"
+          title: "User Id"
+        description: "MongoDB ObjectId of the user"
+      - name: "result_id"
+        in: "path"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "UUID of the result to retrieve"
+          title: "Result Id"
+        description: "UUID of the result to retrieve"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ProcessedResult"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+    delete: 
+      tags: 
+      - "user"
+      summary: "Delete User Result"
+      operationId: "delete_user_result_synthesia_be_user__user_id__results__result_id__delete"
+      parameters: 
+      - name: "user_id"
+        in: "path"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "MongoDB ObjectId of the user"
+          title: "User Id"
+        description: "MongoDB ObjectId of the user"
+      - name: "result_id"
+        in: "path"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "UUID of the result to delete"
+          title: "Result Id"
+        description: "UUID of the result to delete"
+      responses: 
+        204: 
+          description: "Successful Response"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/llm/models: 
+    get: 
+      tags: 
+      - "llm"
+      summary: "List Llm Models"
+      operationId: "list_llm_models_synthesia_be_llm_models_get"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/LLMListResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/llm/summarize: 
+    post: 
+      tags: 
+      - "llm"
+      summary: "Summarize Text"
+      operationId: "summarize_text_synthesia_be_llm_summarize_post"
+      parameters: 
+      - name: "user-id"
+        in: "header"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "User ID from browser metadata"
+          title: "User-Id"
+        description: "User ID from browser metadata"
+      requestBody: 
+        required: "true"
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/SummarizeRequest"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/SummarizeResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/llm/summarize-file: 
+    post: 
+      tags: 
+      - "llm"
+      summary: "Summarize From File"
+      operationId: "summarize_from_file_synthesia_be_llm_summarize_file_post"
+      parameters: 
+      - name: "user-id"
+        in: "header"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "User ID from browser metadata"
+          title: "User-Id"
+        description: "User ID from browser metadata"
+      requestBody: 
+        required: "true"
+        content: 
+          multipart/form-data: 
+            schema: 
+              $ref: "#/components/schemas/Body_summarize_from_file_synthesia_be_llm_summarize_file_post"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/SummarizeResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/llm/extract-entities: 
+    post: 
+      tags: 
+      - "llm"
+      summary: "Extract Entities"
+      operationId: "extract_entities_synthesia_be_llm_extract_entities_post"
+      parameters: 
+      - name: "user-id"
+        in: "header"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "User ID from browser metadata"
+          title: "User-Id"
+        description: "User ID from browser metadata"
+      requestBody: 
+        required: "true"
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/ExtractEntitiesRequest"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ExtractEntitiesResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/llm/extract-entities-file: 
+    post: 
+      tags: 
+      - "llm"
+      summary: "Extract Entities From File"
+      operationId: "extract_entities_from_file_synthesia_be_llm_extract_entities_file_post"
+      parameters: 
+      - name: "user-id"
+        in: "header"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "User ID from browser metadata"
+          title: "User-Id"
+        description: "User ID from browser metadata"
+      requestBody: 
+        required: "true"
+        content: 
+          multipart/form-data: 
+            schema: 
+              $ref: "#/components/schemas/Body_extract_entities_from_file_synthesia_be_llm_extract_entities_file_post"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ExtractEntitiesResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/llm/analyze: 
+    post: 
+      tags: 
+      - "llm"
+      summary: "Analyze Text"
+      operationId: "analyze_text_synthesia_be_llm_analyze_post"
+      parameters: 
+      - name: "user-id"
+        in: "header"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "User ID from browser metadata"
+          title: "User-Id"
+        description: "User ID from browser metadata"
+      requestBody: 
+        required: "true"
+        content: 
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/AnalyzeRequest"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/AnalyzeResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+  /synthesia_be/llm/analyze-file: 
+    post: 
+      tags: 
+      - "llm"
+      summary: "Analyze File"
+      operationId: "analyze_file_synthesia_be_llm_analyze_file_post"
+      parameters: 
+      - name: "user-id"
+        in: "header"
+        required: "true"
+        schema: 
+          type: "string"
+          description: "User ID from browser metadata"
+          title: "User-Id"
+        description: "User ID from browser metadata"
+      requestBody: 
+        required: "true"
+        content: 
+          multipart/form-data: 
+            schema: 
+              $ref: "#/components/schemas/Body_analyze_file_synthesia_be_llm_analyze_file_post"
+      responses: 
+        200: 
+          description: "Successful Response"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/AnalyzeResponse"
+        400: 
+          description: "Bad Request Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        401: 
+          description: "Unauthorized Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        404: 
+          description: "Data Not Found Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+        422: 
+          description: "Validation Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorsListResponseModel"
+        500: 
+          description: "Internal Server Error"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/ErrorDescriptionResponseModel"
+components: 
+  schemas: 
+    AnalyzeRequest: 
+      properties: 
+        text: 
+          anyOf: 
+          - type: "string"
+          - type: "null"
+          title: "Text"
+          description: "Text to analyze. Required if file is not provided."
+        model: 
+          type: "string"
+          title: "Model"
+          description: "Model to use (e.g. llama3, mixtral)"
+        language: 
+          anyOf: 
+          - type: "string"
+          - type: "null"
+          title: "Language"
+          description: "Language for summarization output (e.g. eng, ita, es, fr)"
+          default: "eng"
+        entities: 
+          anyOf: 
+          -
+            items: 
+              type: "string"
+            type: "array"
+          - type: "null"
+          title: "Entities"
+          description: "Optional list of entities to extract (e.g. disease, risk_factors)"
+      type: "object"
+      required: 
+      - "model"
+      title: "AnalyzeRequest"
+    AnalyzeResponse: 
+      properties: 
+        summary: 
+          type: "string"
+          title: "Summary"
+          description: "Summary of the input text"
+        entities: 
+          anyOf: 
+          -
+            additionalProperties: 
+              anyOf: 
+              - type: "string"
+              - additionalProperties: "true"
+                type: "object"
+            type: "object"
+          - type: "null"
+          title: "Entities"
+          description: "Extracted entities as a dictionary"
+        result_id: 
+          type: "string"
+          title: "Result Id"
+      type: "object"
+      required: 
+      - "summary"
+      - "entities"
+      - "result_id"
+      title: "AnalyzeResponse"
+    Body_analyze_file_synthesia_be_llm_analyze_file_post: 
+      properties: 
+        model: 
+          type: "string"
+          title: "Model"
+          description: "Model to use (e.g. llama3, mixtral)"
+        language: 
+          type: "string"
+          title: "Language"
+          description: "Language for summarization (eng, ita, es, fr)"
+          default: "eng"
+        entities: 
+          items: 
+            type: "string"
+          type: "array"
+          title: "Entities"
+          description: "Optional list of entities to extract"
+        file: 
+          type: "string"
+          format: "binary"
+          title: "File"
+          description: "PDF or TXT file to analyze"
+      type: "object"
+      required: 
+      - "model"
+      - "file"
+      title: "Body_analyze_file_synthesia_be_llm_analyze_file_post"
+    Body_extract_entities_from_file_synthesia_be_llm_extract_entities_file_post: 
+      properties: 
+        model: 
+          type: "string"
+          title: "Model"
+          description: "Model to use (e.g. llama3, mixtral)"
+        entities: 
+          anyOf: 
+          -
+            items: 
+              type: "string"
+            type: "array"
+          - type: "null"
+          title: "Entities"
+          description: "Optional list of entities to extract (e.g. disease, risk_factors)"
+        file: 
+          type: "string"
+          format: "binary"
+          title: "File"
+          description: "PDF or TXT file to analyze"
+      type: "object"
+      required: 
+      - "model"
+      - "file"
+      title: "Body_extract_entities_from_file_synthesia_be_llm_extract_entities_file_post"
+    Body_summarize_from_file_synthesia_be_llm_summarize_file_post: 
+      properties: 
+        file: 
+          type: "string"
+          format: "binary"
+          title: "File"
+          description: "PDF or TXT file to summarize"
+        model: 
+          type: "string"
+          title: "Model"
+          description: "Model to use (e.g. llama3, mixtral)"
+        language: 
+          type: "string"
+          enum: 
+          - "eng"
+          - "ita"
+          - "es"
+          - "fr"
+          title: "Language"
+          description: "Language for the summarization prompt. Supported values: 'eng', 'ita', 'es', 'fr'."
+          default: "eng"
+      type: "object"
+      required: 
+      - "file"
+      - "model"
+      title: "Body_summarize_from_file_synthesia_be_llm_summarize_file_post"
+    ErrorDescriptionResponseModel: 
+      properties: 
+        message: 
+          type: "string"
+          title: "Message"
+        description: 
+          anyOf: 
+          - type: "string"
+          - type: "null"
+          title: "Description"
+      type: "object"
+      required: 
+      - "message"
+      title: "ErrorDescriptionResponseModel"
+    ErrorsListResponseModel: 
+      properties: 
+        message: 
+          type: "string"
+          title: "Message"
+        errors: 
+          anyOf: 
+          -
+            items: 
+              type: "string"
+            type: "array"
+          - type: "null"
+          title: "Errors"
+      type: "object"
+      required: 
+      - "message"
+      title: "ErrorsListResponseModel"
+    ExtractEntitiesRequest: 
+      properties: 
+        text: 
+          type: "string"
+          title: "Text"
+          description: "Text to extract entities from"
+        model: 
+          type: "string"
+          title: "Model"
+          description: "Model to use (e.g. llama3, mixtral)"
+        entities: 
+          anyOf: 
+          -
+            items: 
+              type: "string"
+            type: "array"
+          - type: "null"
+          title: "Entities"
+          description: "Optional list of entities to extract (e.g. disease, risk_factors)"
+      type: "object"
+      required: 
+      - "text"
+      - "model"
+      title: "ExtractEntitiesRequest"
+    ExtractEntitiesResponse: 
+      properties: 
+        entities: 
+          additionalProperties: "true"
+          type: "object"
+          title: "Entities"
+          description: "Extracted entities as key-value pairs or raw fallback response"
+        result_id: 
+          type: "string"
+          title: "Result Id"
+      type: "object"
+      required: 
+      - "entities"
+      - "result_id"
+      title: "ExtractEntitiesResponse"
+    HistoryEntry: 
+      properties: 
+        value: 
+          anyOf: 
+          - type: "string"
+          - additionalProperties: "true"
+            type: "object"
+          title: "Value"
+        model: 
+          type: "string"
+          title: "Model"
+        timestamp: 
+          type: "string"
+          title: "Timestamp"
+      type: "object"
+      required: 
+      - "value"
+      - "model"
+      title: "HistoryEntry"
+    LLMListResponse: 
+      properties: 
+        models: 
+          items: 
+            additionalProperties: "true"
+            type: "object"
+          type: "array"
+          title: "Models"
+      type: "object"
+      required: 
+      - "models"
+      title: "LLMListResponse"
+    PaginatedResults: 
+      properties: 
+        results: 
+          items: 
+            $ref: "#/components/schemas/ProcessedResult"
+          type: "array"
+          title: "Results"
+        total: 
+          type: "integer"
+          title: "Total"
+      type: "object"
+      required: 
+      - "results"
+      - "total"
+      title: "PaginatedResults"
+    ProcessedResult: 
+      properties: 
+        _id: 
+          anyOf: 
+          - type: "string"
+          - type: "null"
+          title: "Id"
+        user_id: 
+          type: "string"
+          title: "User Id"
+        source_hash: 
+          type: "string"
+          title: "Source Hash"
+        input_type: 
+          type: "string"
+          enum: 
+          - "text"
+          - "file"
+          title: "Input Type"
+        filename: 
+          anyOf: 
+          - type: "string"
+          - type: "null"
+          title: "Filename"
+        model: 
+          type: "string"
+          title: "Model"
+        language: 
+          anyOf: 
+          - type: "string"
+          - type: "null"
+          title: "Language"
+        entities_requested: 
+          anyOf: 
+          -
+            items: 
+              type: "string"
+            type: "array"
+          - type: "null"
+          title: "Entities Requested"
+        summary: 
+          anyOf: 
+          - type: "string"
+          - type: "null"
+          title: "Summary"
+        extracted_entities: 
+          anyOf: 
+          - additionalProperties: "true"
+            type: "object"
+          - type: "null"
+          title: "Extracted Entities"
+        summary_history: 
+          anyOf: 
+          -
+            items: 
+              $ref: "#/components/schemas/HistoryEntry"
+            type: "array"
+          - type: "null"
+          title: "Summary History"
+          default: 
+        entities_history: 
+          anyOf: 
+          -
+            items: 
+              $ref: "#/components/schemas/HistoryEntry"
+            type: "array"
+          - type: "null"
+          title: "Entities History"
+          default: 
+        created_at: 
+          type: "string"
+          title: "Created At"
+        updated_at: 
+          type: "string"
+          title: "Updated At"
+      type: "object"
+      required: 
+      - "user_id"
+      - "source_hash"
+      - "input_type"
+      - "filename"
+      - "model"
+      - "language"
+      - "entities_requested"
+      - "summary"
+      - "extracted_entities"
+      title: "ProcessedResult"
+    SummarizeRequest: 
+      properties: 
+        text: 
+          type: "string"
+          title: "Text"
+          description: "Text to summarize"
+        model: 
+          type: "string"
+          title: "Model"
+          description: "Model to use (e.g. llama3, mixtral)"
+        language: 
+          type: "string"
+          enum: 
+          - "eng"
+          - "ita"
+          - "es"
+          - "fr"
+          title: "Language"
+          description: "Language for the summarization prompt. Supported values: 'eng' (English), 'ita' (Italian), 'es' (Spanish), 'fr' (French)."
+          default: "eng"
+      type: "object"
+      required: 
+      - "text"
+      - "model"
+      title: "SummarizeRequest"
+    SummarizeResponse: 
+      properties: 
+        summary: 
+          type: "string"
+          title: "Summary"
+        result_id: 
+          type: "string"
+          title: "Result Id"
+      type: "object"
+      required: 
+      - "summary"
+      - "result_id"
+      title: "SummarizeResponse"
+    UserCreateRequest: 
+      properties: 
+        browser_info: 
+          anyOf: 
+          - additionalProperties: "true"
+            type: "object"
+          - type: "null"
+          title: "Browser Info"
+      type: "object"
+      title: "UserCreateRequest"
+    UserResponse: 
+      properties: 
+        _id: 
+          type: "string"
+          title: "Id"
+        browser_info: 
+          anyOf: 
+          - additionalProperties: "true"
+            type: "object"
+          - type: "null"
+          title: "Browser Info"
+        created_at: 
+          type: "string"
+          title: "Created At"
+      type: "object"
+      required: 
+      - "_id"
+      - "created_at"
+      title: "UserResponse"
+    UserUpdateRequest: 
+      properties: 
+        browser_info: 
+          anyOf: 
+          - additionalProperties: "true"
+            type: "object"
+          - type: "null"
+          title: "Browser Info"
+      type: "object"
+      title: "UserUpdateRequest"
